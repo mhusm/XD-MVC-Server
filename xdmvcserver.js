@@ -78,6 +78,13 @@ XDmvcServer.prototype.addPeerJsPeer = function addPeerJsPeer(id, peerId) {
 
 XDmvcServer.prototype.addSocketIoPeer = function addSocketIoPeer(id, socketioId) {
     console.log("adding socketio peer " + id + " " + socketioId);
+
+    //socket.io will automatically reconnect, however the peer may have been cleaned up by the system
+    //TODO should also try to re-establish peerJS connections?
+    if (!this.peers[id]) {
+        this.addPeer(id);
+    }
+
     this.peers[id].usesSocketIo = true;
     this.socketIoPeers[id] = {
         'id': id,
